@@ -10,21 +10,23 @@
 <p th:if="${complete}" th:text="${complete}" style="color: blue"></p>
 
 <form method="POST"
-      th:action="${quizForm.newQuiz}? @{/quiz/insert} : @{/quiz/update}"
+      th:action="${quizForm.newQuiz}?  @{/quiz/insert} : @{/quiz/update}"
       th:object="${quizForm}">
     <label>
-        Quiz
+        Quiz<br>
         <textarea rows="5" cols="50" th:field="*{question}"></textarea>
     </label>
     <br>
-    
+    <br>
+
     <div th:if="${#fields.hasErrors('question')}" th:errors="*{question}" style="color: red"></div>
-    <label>Quiz Answer:
+    <label>Quiz Answer:<br>
         <input type="radio" value="true" th:field="*answer"/> O
         <input type="radio" value="true" th:field="*answer"/> X
     </label>
     <br>
-    
+    <br>
+
     <div th:if="${#fields.hasErrors('answer')}" th:errors="*{answer}" style="color: red"></div>
     <label>author :
         <input type="text" th:field="*{author}"/>
@@ -34,10 +36,51 @@
     <div th:if="${#fields.hasErrors('author')}" th:errors="*{author}" style="color: red"></div>
     
     <input th:if="${id}" type="hidden" th:field="*{id}">
+    <br>
+
     <input type="submit" value="submit">
     <br>
 </form>
 <hr>
-<div th:if=""></div>
+
+<div th:if="${quizForm.newQuiz}" style="margin: 10px">
+    <h3>Quiz List <a th:href="@{/quiz/play}">Play!</a></h3>
+    <p th:if="${delcomplete}" th:text="${delcomplete}" style="color: blue"></p>
+    <p th:if="${msg}" th:text="${msg}" style="color: red"></p>
+
+     <table border-width="1px"  th:unless="${#lists.isEmpty(list)}" style="table-layout: fixed">
+         <tr>
+             <th>ID</th>
+             <th>Quiz</th>
+             <th>Answer</th>
+             <th>Author</th>
+             <th>Change</th>
+             <th>Delete</th>
+         </tr>
+         <tr th:each="obj: ${list}" text-align="center">
+            <td th:text="${obj.id}"></td>
+            <td th:text="${obj.question}"></td>
+            <td th:text="${obj.answer}"></td>
+            <td th:text="${obj.author}"></td>
+         </tr>
+         <td>
+             <form action="@{/quiz/{id}(id=${obj.id})" method="post">
+                 <input type="submit" value="change">
+             </form>
+         </td>
+         <td>
+             <form action="@{/quiz/delete" method="post">
+                 <input type="hidden" name="id" th:value="${obj.id}">
+                 <input type="submit" value="delete">
+             </form>
+         </td>
+     </table>
+    <p th:if="${#lists.isEmpty(list)}">non-exist quiz</p>
+</div>
+
+<p th:unless="${quizForm.newQuiz}">
+    <a href="#" th:href="@{/quiz}">back CRUD page</a>
+</p>
+
 </body>
 </html>

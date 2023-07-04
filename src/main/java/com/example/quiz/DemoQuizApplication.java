@@ -11,7 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.*;
 
 @SpringBootApplication
-public class DemoQuizApplication {
+public class    DemoQuizApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DemoQuizApplication.class, args);
